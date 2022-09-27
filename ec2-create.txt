@@ -1,0 +1,22 @@
+import boto3
+ec2 = boto3.resource('ec2')
+import os 
+
+outfile = open('testkey5.pem','w',)
+
+key_pair = ec2.create_key_pair(KeyName='testkey5')
+
+KeyPairOut = str(key_pair.key_material)
+print(KeyPairOut)
+outfile.write(KeyPairOut)
+
+os.system("chmod 400 ~/testkey5.pem")
+
+instances = ec2.create_instances(
+     ImageId='ami-0f540e9f488cfa27d',
+     MinCount=1,
+     MaxCount=4,
+     InstanceType='t2.micro',
+     KeyName='testkey5',
+    
+ )
